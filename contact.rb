@@ -16,14 +16,17 @@ class Contact
  
   ## Class Methods
   class << self
-    def create(name, email, numbers)
+    def create(name, email, numbers = nil)
       # TODO: Will initialize a contact as well as add it to the list of contacts
-      ContactDatabase.add(name, email, numbers)
+      # Could seperate this method into a few others for clarity and Single Res P
+      id = ContactDatabase.add(name, email, numbers)
+      Contact.new(name, email, id)
+      return id
     end
  
     def find(term)
       # TODO: Will find and return contacts that contain the term in the first name, last name or email
-      puts ContactDatabase.find(term)  
+      ContactDatabase.find(term)  
     end
 
      
@@ -35,7 +38,7 @@ class Contact
     end
     
     def show(id)
-      # TODO: Show a contact, based on ID
+      # TODO: Show a contact, based on ID 
       ContactDatabase.show(id)
     end
    
@@ -43,6 +46,10 @@ class Contact
       #functionally the same as all 
     def list
       ContactDatabase.list
+    end
+
+    def save
+
     end
     
   end

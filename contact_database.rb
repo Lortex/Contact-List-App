@@ -17,12 +17,13 @@ class ContactDatabase
     end
 
     def add(name, email, numbers = nil)
-      new_line = [name, email, self.size, numbers]
+      new_line = [name, email, id = generate_id, numbers]
       CSV.open('contacts.csv', 'a') << new_line
+      return id
     end
 
     def show(id)
-      CSV.foreach('contacts.csv') { |row| row.each {|array| puts array} if (id == row[2].to_i) }
+      CSV.foreach('contacts.csv').select { |row| row.any? {|value| value == id}}
     end
 
     def find(term)
@@ -33,6 +34,11 @@ class ContactDatabase
       #checks the database for duplicate emails
     def dupe?(email)
       CSV.foreach('contacts.csv') { |row| return true if row.include?(email) }
+    end
+
+      #generates a somewhat random id
+    def generate_id
+      self.size.to_s + ('A'..'Z').to_a.sample + (1..9).to_a.sample.to_s 
     end
   end
 end

@@ -15,14 +15,14 @@ case ARGV[0]
     #I am too lazy to change the text of the raised error : )
     puts "Please enter new contact email"
     new_email = STDIN.gets.chomp
-    raise DuplicateEmail if ContactDatabase.dupe?(new_email)
+    raise 'DuplicateEmail' if ContactDatabase.dupe?(new_email)
     puts "Please enter new contact name"
     new_name = STDIN.gets.chomp
     new_number = 'pourquoi'
     #Trying to add 'limitless' phone numbers...
     numbers_list = []
       while new_number != 'no'
-        puts "Add a cellphone? Yes or no"
+        puts "Add a contact number? Yes or no"
         new_number = STDIN.gets.chomp.downcase
           case new_number
             when 'yes'
@@ -33,7 +33,7 @@ case ARGV[0]
               numbers_list << {type_number => phone_number}
               puts numbers_list
             when 'no'
-              Contact.create(new_name, new_email, numbers_list)
+              puts Contact.create(new_name, new_email, numbers_list)
           end
       end
   when 'list'
@@ -41,9 +41,11 @@ case ARGV[0]
   when 'all'
     Contact.all
   when 'find'
-    Contact.find(ARGV[1])
+    puts results = Contact.find(ARGV[1])
+    raise 'NoResultsFound' if results.empty?
   when 'show'
-    Contact.show(ARGV[1].to_i)
+    puts results = Contact.show(ARGV[1])
+    raise 'NoResultsFound' if results.empty?
 end
 
 # TODO: Implement command line interaction
